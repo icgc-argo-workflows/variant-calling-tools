@@ -3,6 +3,8 @@ class: CommandLineTool
 id: generate-bas
 
 requirements:
+- class: NetworkAccess
+  networkAccess: true
 - class: InlineJavascriptRequirement
 - class: ShellCommandRequirement
 - class: InitialWorkDirRequirement
