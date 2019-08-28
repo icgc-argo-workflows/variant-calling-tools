@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM frolvlad/alpine-python3:latest
 
 ENV PATH="/tools:${PATH}"
 
