@@ -31,6 +31,10 @@ inputs:
     default: 1
     inputBinding:
       prefix: --num_threads
+  ref_file:
+    type: File?
+    inputBinding:
+      prefix: -r
 
 outputs:
   bam_and_bas:
