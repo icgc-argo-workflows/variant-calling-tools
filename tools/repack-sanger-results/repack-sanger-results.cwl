@@ -19,36 +19,36 @@ inputs:
 
 outputs:
   normal_contamination:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.normal.contamination.tgz' ]
 
   tumour_contamination:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.tumour.contamination.tgz' ]
 
   ascat:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.ascat.tgz' ]
 
   brass:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.brass.tgz' ]
 
   caveman:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.caveman.tgz' ]
 
   genotyped:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.genotyped.tgz' ]
 
   pindel:
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: [ '*.pindel.tgz' ]
