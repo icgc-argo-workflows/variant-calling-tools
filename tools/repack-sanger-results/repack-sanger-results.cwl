@@ -38,10 +38,10 @@ outputs:
     outputBinding:
       glob: [ '*.brass.tgz' ]
 
-  cavemen:
+  caveman:
     type: File
     outputBinding:
-      glob: [ '*.cavemen.tgz' ]
+      glob: [ '*.caveman.tgz' ]
 
   genotyped:
     type: File

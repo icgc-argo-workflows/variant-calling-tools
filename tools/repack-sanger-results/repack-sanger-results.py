@@ -31,23 +31,22 @@ def main(args):
 
     results = args.input_tar
     results_prefix = os.path.basename(results).split(".")[0]
-    sm_tumour = results_prefix.split("_vs_")[0]
-    sm_normal = results_prefix.split("_vs_")[1]
+    sm_tumour, sm_normal = results_prefix.replace('WGS_', '').split("_vs_")
 
     #unpack the result tarball to workdir
     cmd = "tar -xzf %s -C %s" % (results, os.environ["TMPDIR"])
     run_cmd(cmd)
 
     #repack different types of results
-    source = os.path.join(os.environ["TMPDIR"], sm_normal, 'contamination')
+    source = os.path.join(os.environ["TMPDIR"], 'WGS_'+sm_normal, 'contamination')
     if os.path.exists(source):
-        dest = os.path.join(os.environ["HOME"], '.'.join([results_prefix, 'normal', 'contamination', 'tgz']))
+        dest = os.path.join(os.environ["HOME"], '.'.join([sm_normal, 'normal', 'contamination', 'tgz']))
         cmd = "tar -czf %s -C %s ." %( dest, source )
         run_cmd(cmd)
 
-    source = os.path.join(os.environ["TMPDIR"], sm_tumour, 'contamination')
+    source = os.path.join(os.environ["TMPDIR"], 'WGS_'+sm_tumour, 'contamination')
     if os.path.exists(source):
-        dest = os.path.join(os.environ["HOME"], '.'.join([results_prefix, 'tumour', 'contamination', 'tgz']))
+        dest = os.path.join(os.environ["HOME"], '.'.join([sm_tumour, 'tumour', 'contamination', 'tgz']))
         cmd = "tar -czf %s -C %s ." %( dest, source )
         run_cmd(cmd)
 
