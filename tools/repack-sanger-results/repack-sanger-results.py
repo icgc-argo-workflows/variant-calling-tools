@@ -42,20 +42,20 @@ def main(args):
     source = os.path.join(os.environ["TMPDIR"], sm_normal, 'contamination')
     if os.path.exists(source):
         dest = os.path.join(os.environ["HOME"], '.'.join([results_prefix, 'normal', 'contamination', 'tgz']))
-        cmd = "tar -czf %s -C %s" %( dest, source )
+        cmd = "tar -czf %s -C %s ." %( dest, source )
         run_cmd(cmd)
 
     source = os.path.join(os.environ["TMPDIR"], sm_tumour, 'contamination')
     if os.path.exists(source):
         dest = os.path.join(os.environ["HOME"], '.'.join([results_prefix, 'tumour', 'contamination', 'tgz']))
-        cmd = "tar -czf %s -C %s" %( dest, source )
+        cmd = "tar -czf %s -C %s ." %( dest, source )
         run_cmd(cmd)
 
     for dtype in ['ascat', 'brass', 'caveman', 'genotyped', 'pindel']:
         source = os.path.join(os.environ["TMPDIR"], results_prefix, dtype)
         if not os.path.exists(source): continue
         dest = os.path.join(os.environ["HOME"], '.'.join([results_prefix, dtype, 'tgz']))
-        cmd = "tar -czf %s -C %s" % (dest, source)
+        cmd = "tar -czf %s -C %s ." % (dest, source)
         run_cmd(cmd)
 
 
