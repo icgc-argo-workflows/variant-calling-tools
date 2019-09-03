@@ -26,6 +26,7 @@ inputs:
     type: File
     inputBinding:
       prefix: -i
+    secondaryFiles: [.bai?, .crai?]
   num_threads:
     type: int?
     default: 1
@@ -42,3 +43,8 @@ outputs:
     secondaryFiles: [ '.bas' ]
     outputBinding:
       glob: [ '*.bam', '*.cram' ]
+
+  bai:
+    type: File
+    outputBinding:
+      glob: [ '*.bai', '*.crai' ]
