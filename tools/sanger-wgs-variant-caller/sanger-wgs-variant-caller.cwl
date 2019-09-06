@@ -25,7 +25,7 @@ doc: |
 
 requirements:
   - class: DockerRequirement
-    dockerPull: "quay.io/wtsicgp/dockstore-cgpwgs:2.1.0"
+    dockerPull: "quay.io/icgc-argo/sanger-wgs-variant-caller:2.1.0-1"
 
 hints:
   - class: ResourceRequirement
