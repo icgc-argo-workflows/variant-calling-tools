@@ -29,7 +29,7 @@ inputs:
     secondaryFiles: [.bai?, .crai?]
   num_threads:
     type: int?
-    default: 1
+    default: 18
     inputBinding:
       prefix: --num_threads
   ref_file:
