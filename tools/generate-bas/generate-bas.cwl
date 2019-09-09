@@ -13,6 +13,11 @@ requirements:
 - class: DockerRequirement
   dockerPull: 'quay.io/wtsicgp/dockstore-cgpwgs:2.1.0'
 
+hints:
+  - class: ResourceRequirement
+    coresMin: $(inputs.num_threads)
+    ramMin: 2000
+
 baseCommand: [ '/opt/wtsi-cgp/bin/bam_stats' ]
 
 arguments:
