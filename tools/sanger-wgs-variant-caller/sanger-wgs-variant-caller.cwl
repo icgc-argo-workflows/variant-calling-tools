@@ -37,6 +37,9 @@ inputs:
   num_threads:
     type: int?
     default: 18
+    inputBinding:
+      prefix: -cores
+      separate: true
 
   reference:
     type: File
