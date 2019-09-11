@@ -1,0 +1,7 @@
+FROM frolvlad/alpine-python3:latest
+
+ENV PATH="/tools:${PATH}"
+
+COPY *.py /tools/
+
+CMD ["/bin/bash"]
