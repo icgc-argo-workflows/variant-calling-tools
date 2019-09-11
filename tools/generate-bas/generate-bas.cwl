@@ -3,6 +3,8 @@ class: CommandLineTool
 id: generate-bas
 
 requirements:
+- class: NetworkAccess
+  networkAccess: true
 - class: InlineJavascriptRequirement
 - class: ShellCommandRequirement
 - class: InitialWorkDirRequirement
@@ -10,6 +12,11 @@ requirements:
     - $(inputs.input)
 - class: DockerRequirement
   dockerPull: 'quay.io/wtsicgp/dockstore-cgpwgs:2.1.0'
+
+hints:
+  - class: ResourceRequirement
+    coresMin: $(inputs.num_threads)
+    ramMin: 2000
 
 baseCommand: [ '/opt/wtsi-cgp/bin/bam_stats' ]
 
@@ -24,11 +31,16 @@ inputs:
     type: File
     inputBinding:
       prefix: -i
+    secondaryFiles: [.bai?, .crai?]
   num_threads:
     type: int?
-    default: 1
+    default: 18
     inputBinding:
       prefix: --num_threads
+  ref_file:
+    type: File?
+    inputBinding:
+      prefix: -r
 
 outputs:
   bam_and_bas:
@@ -36,3 +48,8 @@ outputs:
     secondaryFiles: [ '.bas' ]
     outputBinding:
       glob: [ '*.bam', '*.cram' ]
+
+  bai:
+    type: File
+    outputBinding:
+      glob: [ '*.bai', '*.crai' ]

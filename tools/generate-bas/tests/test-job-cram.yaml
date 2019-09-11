@@ -1,0 +1,7 @@
+input:
+  class: File
+  path: input/172cd780-231b-56ee-815a-f45a29cc3bd9.3.20190824.wgs.grch38.cram
+num_threads: 5
+ref_file:
+  class: File
+  path: /Users/lxiang/projects/icgc-argo/dna-seq-processing-tools/tests/reference/tiny-grch38-chr11-530001-537000.fa
