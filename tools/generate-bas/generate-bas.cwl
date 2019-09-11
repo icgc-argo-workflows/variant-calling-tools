@@ -41,6 +41,7 @@ inputs:
     type: File?
     inputBinding:
       prefix: -r
+    secondaryFiles: [.fai]
 
 outputs:
   bam_and_bas:
