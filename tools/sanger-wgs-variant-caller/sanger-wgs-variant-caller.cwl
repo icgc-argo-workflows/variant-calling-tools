@@ -29,11 +29,18 @@ requirements:
 
 hints:
   - class: ResourceRequirement
-    coresMin: 1 # works but long, 24 recommended
+    coresMin: $(inputs.num_threads)
     ramMin: 32000
     outdirMin: 20000
 
 inputs:
+  num_threads:
+    type: int?
+    default: 18
+    inputBinding:
+      prefix: -cores
+      separate: true
+
   reference:
     type: File
     doc: "The core reference (fa, fai, dict) as tar.gz"
