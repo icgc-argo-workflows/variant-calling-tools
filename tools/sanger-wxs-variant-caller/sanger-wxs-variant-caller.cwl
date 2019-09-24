@@ -104,7 +104,7 @@ inputs:
   species:
     type: string?
     doc: "Species to apply if not found in BAM headers"
-    default: ''
+    default: 'human'
     inputBinding:
       prefix: -species
       separate: true
@@ -113,7 +113,7 @@ inputs:
   assembly:
     type: string?
     doc: "Assembly to apply if not found in BAM headers"
-    default: ''
+    default: 'GRCh38'
     inputBinding:
       prefix: -assembly
       separate: true
