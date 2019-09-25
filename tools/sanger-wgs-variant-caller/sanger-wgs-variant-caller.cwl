@@ -25,7 +25,7 @@ doc: |
 
 requirements:
   - class: DockerRequirement
-    dockerPull: "quay.io/icgc-argo/sanger-wgs-variant-caller:sanger-wgs-variant-caller.2.1.0-2"
+    dockerPull: "quay.io/icgc-argo/sanger-wgs-variant-caller:sanger-wgs-variant-caller.2.1.0-3"
 
 hints:
   - class: ResourceRequirement
@@ -119,7 +119,7 @@ inputs:
   species:
     type: string?
     doc: "Species to apply if not found in BAM headers"
-    default: ''
+    default: 'human'
     inputBinding:
       prefix: -species
       separate: true
@@ -128,7 +128,7 @@ inputs:
   assembly:
     type: string?
     doc: "Assembly to apply if not found in BAM headers"
-    default: ''
+    default: 'GRCh38'
     inputBinding:
       prefix: -assembly
       separate: true
@@ -137,6 +137,7 @@ inputs:
   skipqc:
     type: boolean?
     doc: "Disable genotype and verifyBamID steps"
+    default: false
     inputBinding:
       prefix: -skipqc
       separate: true
@@ -160,6 +161,7 @@ inputs:
   purity:
     type: float?
     doc: "Set the purity (rho) for ascat when default solution needs additional guidance. If set ploidy is also required."
+    default: 1.0
     inputBinding:
       prefix: -pu
       separate: true
@@ -167,6 +169,7 @@ inputs:
   ploidy:
     type: float?
     doc: "Set the ploidy (psi) for ascat when default solution needs additional guidance. If set purity is also required."
+    default: 2.0
     inputBinding:
       prefix: -pi
       separate: true
