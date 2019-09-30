@@ -66,7 +66,7 @@ def main(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-i", "--input-tar", dest="input_tar")
-    parser.add_argument("-l", "--library-strategy", dest="library_strategy", type=str)
+    parser.add_argument("-l", "--library-strategy", dest="library_strategy", type=str, choices=['WXS', 'WGS'])
     args = parser.parse_args()
 
     main(args)
