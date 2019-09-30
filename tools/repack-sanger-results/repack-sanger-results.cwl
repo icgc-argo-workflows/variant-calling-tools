@@ -6,7 +6,7 @@ requirements:
 - class: InlineJavascriptRequirement
 - class: ShellCommandRequirement
 - class: DockerRequirement
-  dockerPull: 'quay.io/icgc-argo/repack-sanger-results:repack-sanger-results.0.1.0'
+  dockerPull: 'quay.io/icgc-argo/repack-sanger-results:repack-sanger-results.0.1.1'
 
 baseCommand: [ 'repack-sanger-results.py' ]
 
@@ -16,6 +16,10 @@ inputs:
     inputBinding:
       prefix: -i
 
+  library_strategy:
+    type: string
+    inputBinding:
+      prefix: -l
 
 outputs:
   normal_contamination:
