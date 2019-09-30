@@ -1,0 +1,31 @@
+{
+  "reference": {
+    "path": "https://object.cancercollaboratory.org:9080/swift/v1/genomics-public-data/sanger-variant-calling/core_ref_GRCh38_hla_decoy_ebv.tar.gz",
+    "class": "File"
+  },
+  "annot": {
+    "path": "https://object.cancercollaboratory.org:9080/swift/v1/genomics-public-data/sanger-variant-calling/VAGrENT_ref_GRCh38_hla_decoy_ebv_ensembl_91.tar.gz",
+    "class": "File"
+  },
+  "snv_indel": {
+    "path": "https://object.cancercollaboratory.org:9080/swift/v1/genomics-public-data/sanger-variant-calling/SNV_INDEL_ref_GRCh38_hla_decoy_ebv-fragment.tar.gz",
+    "class": "File"
+  },
+  "tumour": {
+    "path": "",
+    "class": "File"
+  },
+  "tumourIdx": {
+    "path": "",
+    "class": "File"
+  },
+  "normal": {
+    "path": "",
+    "class": "File"
+  },
+  "normalIdx": {
+    "path": "",
+    "class": "File"
+  },
+  "exclude": "chrUn%,HLA%,%_alt,%_random,chrM,chrEBV"
+}
