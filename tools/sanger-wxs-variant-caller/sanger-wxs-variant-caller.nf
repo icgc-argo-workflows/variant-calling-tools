@@ -39,7 +39,7 @@ params.cpus = 18
 params.mem = 4  // GB
 
 
-def getSangerSecondaryFiles(main_file){  //this is kind of like CWL's secondary files
+def getSangerWxsSecondaryFiles(main_file){  //this is kind of like CWL's secondary files
   def all_files = []
   for (ext in ['.bas']) {
     all_files.add(main_file + ext)

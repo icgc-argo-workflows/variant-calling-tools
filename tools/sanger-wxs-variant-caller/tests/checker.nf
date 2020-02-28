@@ -31,14 +31,14 @@ params.tumourIdx = ""
 params.normal = ""
 params.normalIdx = ""
 
-include sangerWxsVariantCall from '../sanger-wxs-variant-caller' params(params)
+include { sangerWxsVariantCall; getSangerWxsSecondaryFiles } from '../sanger-wxs-variant-caller' params(params)
 
 Channel
-  .fromPath(getSangerSecondaryFiles(params.tumour), checkIfExists: true)
+  .fromPath(getSangerWxsSecondaryFiles(params.tumour), checkIfExists: true)
   .set { tumour_ch }
 
 Channel
-  .fromPath(getSangerSecondaryFiles(params.normal), checkIfExists: true)
+  .fromPath(getSangerWxsSecondaryFiles(params.normal), checkIfExists: true)
   .set { normal_ch }
 
 // will not run when import as module
