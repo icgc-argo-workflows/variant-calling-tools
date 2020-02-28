@@ -33,14 +33,14 @@ params.tumourIdx = ""
 params.normal = ""
 params.normalIdx = ""
 
-include sangerWgsVariantCall from '../sanger-wgs-variant-caller' params(params)
+include { sangerWgsVariantCall; getSangerWgsSecondaryFiles } from '../sanger-wgs-variant-caller' params(params)
 
 Channel
-  .fromPath(getSangerSecondaryFiles(params.tumour), checkIfExists: true)
+  .fromPath(getSangerWgsSecondaryFiles(params.tumour), checkIfExists: true)
   .set { tumour_ch }
 
 Channel
-  .fromPath(getSangerSecondaryFiles(params.normal), checkIfExists: true)
+  .fromPath(getSangerWgsSecondaryFiles(params.normal), checkIfExists: true)
   .set { normal_ch }
 
 // will not run when import as module
