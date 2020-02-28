@@ -31,7 +31,7 @@ params.tumourIdx = ""
 params.normal = ""
 params.normalIdx = ""
 
-include '../sanger-wxs-variant-caller' params(params)
+include sangerWxsVariantCall from '../sanger-wxs-variant-caller' params(params)
 
 Channel
   .fromPath(getSangerSecondaryFiles(params.tumour), checkIfExists: true)
@@ -57,5 +57,5 @@ workflow {
     )
 
   publish:
-    sangerWgsVariantCall.out to: "outdir", overwrite: true
+    sangerWxsVariantCall.out to: "outdir", overwrite: true
 }

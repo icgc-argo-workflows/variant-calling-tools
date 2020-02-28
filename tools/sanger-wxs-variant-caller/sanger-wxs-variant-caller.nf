@@ -72,19 +72,19 @@ process sangerWxsVariantCall {
     path "WXS_*_vs_*.timings.tar.gz", emit: timings
 
   script:
-    arg_skipqc = params.skipqc ? "-skipqc" : ""
     """
     /opt/wtsi-cgp/bin/ds-cgpwxs.pl \
       -cores ${task.cpus} \
-      -reference reference \
-      -annot annot \
-      -snv_indel snv_indel \
-      -tumour tumour \
-      -tidx tidx \
-      -normal normal \
-      -nidx nidx \
+      -reference ${reference} \
+      -annot ${annot} \
+      -snv_indel ${snv_indel} \
+      -tumour ${tumour} \
+      -tidx ${tidx} \
+      -normal ${normal} \
+      -nidx ${nidx} \
       -exclude ${params.exclude} \
       -species ${params.species} \
-      -assembly ${params.assembly}
+      -assembly ${params.assembly} \
+      -outdir \$PWD
     """
 }
