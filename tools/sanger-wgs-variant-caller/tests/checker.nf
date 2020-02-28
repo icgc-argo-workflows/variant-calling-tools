@@ -33,7 +33,7 @@ params.tumourIdx = ""
 params.normal = ""
 params.normalIdx = ""
 
-include '../sanger-wgs-variant-caller' params(params)
+include sangerWgsVariantCall from '../sanger-wgs-variant-caller' params(params)
 
 Channel
   .fromPath(getSangerSecondaryFiles(params.tumour), checkIfExists: true)

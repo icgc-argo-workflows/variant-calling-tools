@@ -43,8 +43,8 @@ params.cavereads = 350000
 params.purity = 1.0
 params.ploidy = 2.0
 params.container_version = ""
-params.cpus = 1
-params.mem = 1  // GB
+params.cpus = 24
+params.mem = 4  // GB
 
 
 def getSangerSecondaryFiles(main_file){  //this is kind of like CWL's secondary files
@@ -87,22 +87,23 @@ process sangerWgsVariantCall {
     """
     /opt/wtsi-cgp/bin/ds-cgpwgs.pl \
       -cores ${task.cpus} \
-      -reference reference \
-      -annot annot \
-      -snv_indel snv_indel \
-      -cnv_sv cnv_sv \
-      -qcset qcset \
-      -tumour tumour \
-      -tidx tidx \
-      -normal normal \
-      -nidx nidx \
+      -reference ${reference} \
+      -annot ${annot} \
+      -snv_indel ${snv_indel} \
+      -cnv_sv ${cnv_sv} \
+      -qcset ${qcset} \
+      -tumour ${tumour} \
+      -tidx ${tidx} \
+      -normal ${normal} \
+      -nidx ${nidx} \
       -exclude ${params.exclude} \
       -species ${params.species} \
       -assembly ${params.assembly} \
       ${arg_skipqc} \
-      -pindelcpu ${task.cpus} \
-      -cavereads ${params.cavereads}
-      -pu ${params.purity}
-      -pi ${params.ploidy}
+      -pindelcpu ${params.pindelcpu} \
+      -cavereads ${params.cavereads} \
+      -pu ${params.purity} \
+      -pi ${params.ploidy} \
+      -outdir \$PWD
     """
 }
