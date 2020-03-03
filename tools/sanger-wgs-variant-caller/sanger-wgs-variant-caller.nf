@@ -55,7 +55,7 @@ def getSangerWgsSecondaryFiles(main_file){  //this is kind of like CWL's seconda
   return all_files
 }
 
-process sangerWgsVariantCall {
+process sangerWgsVariantCaller {
   container "quay.io/icgc-argo/sanger-wgs-variant-caller:sanger-wgs-variant-caller.${params.container_version ?: version}"
 
   cpus params.cpus
