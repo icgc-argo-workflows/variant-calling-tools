@@ -44,7 +44,7 @@ params.purity = 1.0
 params.ploidy = 2.0
 params.container_version = ""
 params.cpus = 24
-params.mem = 4  // GB
+params.mem = 64  // GB
 
 
 def getSangerWgsSecondaryFiles(main_file){  //this is kind of like CWL's secondary files
