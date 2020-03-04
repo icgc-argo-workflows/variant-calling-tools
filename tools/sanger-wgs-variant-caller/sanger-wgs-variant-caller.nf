@@ -73,7 +73,7 @@ process sangerWgsVariantCaller {
     path tidx
     path tumour_bas
     path normal
-    path nidex
+    path nidx
     path normal_bas
 
   output:

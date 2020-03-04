@@ -51,7 +51,7 @@ workflow {
       file(params.annot),
       file(params.snv_indel),
       file(params.cnv_sv),
-      file(params.qcset)
+      file(params.qcset),
       file(params.tumour),
       file(params.tumourIdx),
       tumour_ch.collect(),

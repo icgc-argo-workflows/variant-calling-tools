@@ -130,7 +130,7 @@ fi
 ## Make fake copynumber so we can run early steps of caveman
 perl -alne 'print join(qq{\t},$F[0],0,$F[1],2);' < $REF_BASE/genome.fa.fai | tee $TMP/norm.cn.bed > $TMP/tum.cn.bed
 
-echo "Setting up Parallel block 1"
+echo "Setting up Parallel block 0"
 
 if [ "$ALN_EXTN" == "cram" ]; then
   ## prime the cache
@@ -139,6 +139,14 @@ if [ "$ALN_EXTN" == "cram" ]; then
   export REF_PATH=$REF_CACHE
   do_parallel[cache_POP]="seq_cache_populate.pl -root $USER_CACHE $REF_BASE/genome.fa"
 fi
+
+echo "Starting Parallel block 0: `date`"
+run_parallel do_parallel
+
+# unset and redeclare the parallel array ready for block 2
+unset do_parallel
+declare -A do_parallel
+echo -e "\nSetting up Parallel block 1"
 
 echo -e "\t[Parallel block 1] CaVEMan setup added..."
 do_parallel[CaVEMan_setup]="caveman.pl \
