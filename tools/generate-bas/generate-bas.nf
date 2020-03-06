@@ -24,7 +24,7 @@
 nextflow.preview.dsl=2
 version = '0.2.0.0'
 
-params.reference = ""
+params.reference = "NO_FILE"
 params.seq = ""
 params.seq_idx = ""
 params.container_version = ""
@@ -58,10 +58,11 @@ process generateBas {
     path "${seq_idx.name}", emit: index_file
 
   script:
+    arg_ref = reference.name != 'NO_FILE' ? "-r ${reference}" : ''
     """
     /opt/wtsi-cgp/bin/bam_stats \
       -i ${seq} \
-      -r ${reference} \
+      ${arg_ref} \
       --num_threads ${task.cpus} \
       -o ${seq.name}.bas
     """

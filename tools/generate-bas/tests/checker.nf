@@ -23,14 +23,14 @@
 
 nextflow.preview.dsl=2
 
-params.reference = ""
+params.reference = "NO_FILE"
 params.seq = ""
 params.seq_idx = ""
 
 include { generateBas; getBasSecondaryFiles } from '../generate-bas' params(params)
 
 Channel
-  .fromPath(getBasSecondaryFiles(params.reference), checkIfExists: true)
+  .fromPath(getBasSecondaryFiles(params.reference), checkIfExists: false)
   .set { reference_fai }
 
 // will not run when import as module
