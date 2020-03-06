@@ -29,36 +29,37 @@ def run_cmd(cmd):
 
 def main(args):
 
+    cwd = os.getcwd()
     results = args.input_tar
     results_prefix = os.path.basename(results).split(".")[0]
     sm_tumour, sm_normal = results_prefix.replace(args.library_strategy+'_', '').split("_vs_")
 
     #unpack the result tarball to workdir
-    cmd = "tar -xzf %s -C %s" % (results, os.environ["TMPDIR"])
+    cmd = "tar -xzf %s -C %s" % (results, cwd)
     run_cmd(cmd)
 
     #repack different types of results
-    source = os.path.join(os.environ["TMPDIR"], args.library_strategy+'_'+sm_normal, 'contamination')
+    source = os.path.join(cwd, args.library_strategy+'_'+sm_normal, 'contamination')
     if os.path.exists(source):
-        dest = os.path.join(os.environ["HOME"], '.'.join([sm_normal, 'normal', 'contamination', 'tgz']))
+        dest = os.path.join(cwd, '.'.join([sm_normal, 'normal', 'contamination', 'tgz']))
         cmd = "tar -czf %s -C %s ." %( dest, source )
         run_cmd(cmd)
 
-    source = os.path.join(os.environ["TMPDIR"], args.library_strategy+'_'+sm_tumour, 'contamination')
+    source = os.path.join(cwd, args.library_strategy+'_'+sm_tumour, 'contamination')
     if os.path.exists(source):
-        dest = os.path.join(os.environ["HOME"], '.'.join([sm_tumour, 'tumour', 'contamination', 'tgz']))
+        dest = os.path.join(cwd, '.'.join([sm_tumour, 'tumour', 'contamination', 'tgz']))
         cmd = "tar -czf %s -C %s ." %( dest, source )
         run_cmd(cmd)
 
     for dtype in ['ascat', 'brass', 'caveman', 'genotyped', 'pindel']:
         if args.library_strategy == "WGS":
-            source = os.path.join(os.environ["TMPDIR"], results_prefix, dtype)
+            source = os.path.join(cwd, results_prefix, dtype)
         elif args.library_strategy == "WXS":
-            source = os.path.join(os.environ["TMPDIR"], sm_tumour+"_vs_"+sm_normal, dtype)
+            source = os.path.join(cwd, sm_tumour+"_vs_"+sm_normal, dtype)
         else:
             sys.exit("Unknown library_strategy!")
         if not os.path.exists(source): continue
-        dest = os.path.join(os.environ["HOME"], '.'.join([results_prefix, dtype, 'tgz']))
+        dest = os.path.join(cwd, '.'.join([results_prefix, dtype, 'tgz']))
         cmd = "tar -czf %s -C %s ." % (dest, source)
         run_cmd(cmd)
 
