@@ -23,11 +23,11 @@
 
 nextflow.preview.dsl=2
 
-params.reference = ""
-params.annot = ""
-params.snv_indel = ""
-params.cnv_sv = ""
-params.qcset = ""
+params.ref_genome_tar = ""
+params.vagrent_annot = ""
+params.ref_snv_indel_tar = ""
+params.ref_cnv_sv_tar = ""
+params.qcset_tar = ""
 params.tumour = ""
 params.tumourIdx = ""
 params.normal = ""
@@ -47,11 +47,11 @@ Channel
 workflow {
   main:
     sangerWgsVariantCaller(
-      file(params.reference),
-      file(params.annot),
-      file(params.snv_indel),
-      file(params.cnv_sv),
-      file(params.qcset),
+      file(params.ref_genome_tar),
+      file(params.vagrent_annot),
+      file(params.ref_snv_indel_tar),
+      file(params.ref_cnv_sv_tar),
+      file(params.qcset_tar),
       file(params.tumour),
       file(params.tumourIdx),
       tumour_ch.collect(),

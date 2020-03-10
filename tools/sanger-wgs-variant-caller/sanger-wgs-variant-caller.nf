@@ -25,11 +25,11 @@
 nextflow.preview.dsl=2
 version = '2.1.0-4'
 
-params.reference = ""
-params.annot = ""
-params.snv_indel = ""
-params.cnv_sv = ""
-params.qcset = ""
+params.ref_genome_tar = ""
+params.vagrent_annot = ""
+params.ref_snv_indel_tar = ""
+params.ref_cnv_sv_tar = ""
+params.qcset_tar = ""
 params.tumour = ""
 params.tumourIdx = ""
 params.normal = ""
