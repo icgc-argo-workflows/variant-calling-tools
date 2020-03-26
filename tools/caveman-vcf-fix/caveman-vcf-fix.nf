@@ -44,7 +44,6 @@ process cavemanVcfFix {
 
   script:
     """
-    caveman-vcf-fix.py \
-      -i ${input_tar}
+    caveman-vcf-fix.py -i ${input_tar}
     """
 }

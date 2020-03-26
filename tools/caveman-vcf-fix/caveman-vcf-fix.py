@@ -37,6 +37,7 @@ def main(args):
     fixed_folder = os.path.join(cwd, 'fixed')
     if not os.path.exists(fixed_folder):
         os.mkdir(fixed_folder)
+
     out_folder = os.path.join(cwd, 'out')
     if not os.path.exists(out_folder):
         os.mkdir(out_folder)
