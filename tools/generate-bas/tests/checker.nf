@@ -42,4 +42,6 @@ workflow {
       file(params.reference),
       reference_fai.collect()
     )
+  publish:
+    generateBas.out.bas_file to: 'outdir', overwrite: true
 }

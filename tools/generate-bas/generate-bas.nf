@@ -53,9 +53,7 @@ process generateBas {
     path reference_fai
 
   output:
-    path "${seq.name}", emit: primary_file
     path "${seq.name}.bas", emit: bas_file
-    path "${seq_idx.name}", emit: index_file
 
   script:
     arg_ref = reference.name != 'NO_FILE' ? "-r ${reference}" : ''
