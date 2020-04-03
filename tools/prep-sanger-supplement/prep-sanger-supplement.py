@@ -62,7 +62,7 @@ def main(args):
             "files": []
         }
 
-        for f in glob.glob(f"{tool_name}/*"):
+        for f in sorted(glob.glob(f"{tool_name}/*")):
             content['files'].append(f.split(os.sep)[1])
 
         extra_info['content'].append(content)
