@@ -35,7 +35,7 @@ def main(args):
     prefix = 'sanger'  # will be overwritten
     extra_info = {
         "description": "This TGZ file contains various intermediate data produced by Sanger variant calling pipeline.",
-        "content": []
+        "contents": []
     }
     for tar in args.result_tars:
         tar_name = os.path.basename(tar)
@@ -65,7 +65,7 @@ def main(args):
         for f in sorted(glob.glob(f"{tool_name}/*")):
             content['files'].append(f.split(os.sep)[1])
 
-        extra_info['content'].append(content)
+        extra_info['contents'].append(content)
 
     extra_info_file = 'sanger.supplement.extra_info.json'
     with open (extra_info_file, 'w') as w:
