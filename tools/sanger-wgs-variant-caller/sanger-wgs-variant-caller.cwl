@@ -142,6 +142,14 @@ inputs:
       prefix: -skipqc
       separate: true
 
+  skipannot:
+    type: boolean?
+    doc: "Disable Pindel and CaVEMan annotation steps"
+    default: false
+    inputBinding:
+      prefix: -skipannot
+      separate: true
+
   pindelcpu:
     type: int?
     doc: "Max cpus for pindel, ignores >8"

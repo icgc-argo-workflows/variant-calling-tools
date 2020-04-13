@@ -375,13 +375,17 @@ do_parallel[BRASS]="brass.pl -j 4 -k 4 -c $CPU \
  -ss $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/ascat/$NAME_MT.samplestatistics.txt \
  -o $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/brass"
 
-# ensure no annotated pindel
-rm -f $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/pindel/${NAME_MT}_vs_${NAME_WT}.annot.vcf.gz*
+if [ ! -z ${SKIPANNOT+x} ]; then
+  do_parallel[cgpPindel_annot]="echo 'Pindel_annot disabled by params'"
+else
+  # ensure no annotated pindel
+  rm -f $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/pindel/${NAME_MT}_vs_${NAME_WT}.annot.vcf.gz*
 
-echo -e "\t[Parallel block 5] Pindel_annot added..."
-do_parallel[cgpPindel_annot]="AnnotateVcf.pl -t -c $REF_BASE/vagrent/vagrent.cache.gz \
- -i $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/pindel/${NAME_MT}_vs_${NAME_WT}.flagged.vcf.gz \
- -o $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/pindel/${NAME_MT}_vs_${NAME_WT}.annot.vcf"
+  echo -e "\t[Parallel block 5] Pindel_annot added..."
+  do_parallel[cgpPindel_annot]="AnnotateVcf.pl -t -c $REF_BASE/vagrent/vagrent.cache.gz \
+   -i $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/pindel/${NAME_MT}_vs_${NAME_WT}.flagged.vcf.gz \
+   -o $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/pindel/${NAME_MT}_vs_${NAME_WT}.annot.vcf"
+fi
 
 echo -e "\t[Parallel block 5] CaVEMan flag added..."
 do_parallel[CaVEMan_flag]="caveman.pl \
@@ -416,24 +420,28 @@ unset do_parallel
 declare -A do_parallel
 echo -e "\nSetting up Parallel block 6"
 
-# annotate caveman
-rm -f $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/caveman/${NAME_MT}_vs_${NAME_WT}.annot.muts.vcf.gz*
-echo -e "\t[Parallel block 6] CaVEMan_annot added..."
-do_parallel[CaVEMan_annot]="AnnotateVcf.pl -t -c $REF_BASE/vagrent/vagrent.cache.gz \
- -i $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/caveman/${NAME_MT}_vs_${NAME_WT}.flagged.muts.vcf.gz \
- -o $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/caveman/${NAME_MT}_vs_${NAME_WT}.annot.muts.vcf"
+if [ ! -z ${SKIPANNOT+x} ]; then
+  do_parallel[CaVEMan_annot]="echo 'CaVEMan_annot disabled by params'"
+else
+  # annotate caveman
+  rm -f $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/caveman/${NAME_MT}_vs_${NAME_WT}.annot.muts.vcf.gz*
+  echo -e "\t[Parallel block 6] CaVEMan_annot added..."
+  do_parallel[CaVEMan_annot]="AnnotateVcf.pl -t -c $REF_BASE/vagrent/vagrent.cache.gz \
+   -i $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/caveman/${NAME_MT}_vs_${NAME_WT}.flagged.muts.vcf.gz \
+   -o $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/caveman/${NAME_MT}_vs_${NAME_WT}.annot.muts.vcf"
+fi
 
 if [ ! -z ${SKIPQC+x} ]; then
   do_parallel[verify_MT]="echo 'VerifyBam Tumour disabled by params'"
 else
-echo -e "\t[Parallel block 6] VerifyBam Tumour added..."
-do_parallel[verify_MT]="verifyBamHomChk.pl -d 25 \
- -o $OUTPUT_DIR/${PROTOCOL}_$NAME_MT/contamination \
- -b $BAM_MT_TMP \
- -t $CPU \
- -a $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/ascat/${NAME_MT}.copynumber.caveman.csv \
- -j $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}/contamination/result.json \
- -s $REF_BASE/verifyBamID_snps.vcf.gz"
+  echo -e "\t[Parallel block 6] VerifyBam Tumour added..."
+  do_parallel[verify_MT]="verifyBamHomChk.pl -d 25 \
+   -o $OUTPUT_DIR/${PROTOCOL}_$NAME_MT/contamination \
+   -b $BAM_MT_TMP \
+   -t $CPU \
+   -a $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}_vs_${NAME_WT}/ascat/${NAME_MT}.copynumber.caveman.csv \
+   -j $OUTPUT_DIR/${PROTOCOL}_${NAME_MT}/contamination/result.json \
+   -s $REF_BASE/verifyBamID_snps.vcf.gz"
 fi
 
 echo "Starting Parallel block 6: `date`"
