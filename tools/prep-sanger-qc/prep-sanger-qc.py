@@ -38,6 +38,11 @@ def get_bas_extra_info(file_path):
         Reader = csv.DictReader(fp, delimiter='\t')
         info = []
         for line in Reader:
+            for key, value in line.items():
+                if key.startswith('#') or key in ['read_length_r1', 'read_length_r2']:
+                    line.update({key: int(value)})
+                if key in ['insert_size_sd', 'mean_insert_size', 'median_insert_size']:
+                    line.update({key: float(value)})
             info.append(line)
     extra_info.update({'read_groups': info})
     return extra_info
@@ -48,7 +53,10 @@ def get_ascat_extra_info(file_path):
     with open(file_path, 'r') as fp:
         for row in fp.readlines():
             cols = row.strip().split()
-            extra_info.update({cols[0]: cols[1]})
+            if cols[0] in ['GenderChr', 'GenderChrFound']:
+                extra_info.update({cols[0]: cols[1]})
+            else:
+                extra_info.update({cols[0]: float(cols[1])})
 
     return extra_info
 
@@ -60,10 +68,12 @@ def get_contamination_extra_info(file_path):
         for sample in info:
             extra_info.update({'sample_id': sample})
             extra_info['by_readgroup'] = []
-            for rg in info[sample]['by_readgroup']:
+            for rg, rgv in info[sample]['by_readgroup'].items():
                 rg_value = {}
                 rg_value.update({'read_group_id': rg})
-                rg_value.update(info[sample]['by_readgroup'][rg])
+                rg_value.update({'avg_depth': float(rgv['avg_depth'])})
+                rg_value.update({'contamination': float(rgv['contamination'])})
+                rg_value.update({'reads_used': int(rgv['reads_used'])})
                 extra_info['by_readgroup'].append(rg_value)
 
     return extra_info
