@@ -33,46 +33,49 @@ def run_cmd(cmd):
 def main(args):
     untarred_dirs = []
     prefix = 'sanger'  # will be overwritten
-    extra_info = {
-        "description": "This TGZ file contains various intermediate data produced by Sanger variant calling pipeline.",
-        "contents": []
+
+    description = {
+        'caveman': 'Files provided by CaVEMan tool',
+        'pindel': 'Files provided by Pindel tool',
+        'ascat': 'Files provided by ASCAT tool, bw files removed',
+        'brass': 'Files provided by BRASS tool, bw files and intermediates.tar.gz removed',
+        'timings': 'Files contain timing information for different processing steps'
     }
     for tar in args.result_tars:
         tar_name = os.path.basename(tar)
         prefix = tar_name.split('.')[0]
-        tool_name = tar_name.split('.')[-2]
+        if tar_name.endswith('.timings.tar.gz'):
+            tool_name = tar_name.split('.')[-3]
+        else:
+            tool_name = tar_name.split('.')[-2]
 
         # untar and remove unneeded files
-        cmd = "mkdir %s && tar -xf %s -C %s && rm -fr %s/*.intermediates.tar.gz %s/*.bw" % \
-             (tool_name, tar, tool_name, tool_name, tool_name)
+        if tool_name == 'timings':
+            cmd = "tar -xf %s -C %s && rm -fr %s/*.intermediates.tar.gz %s/*.bw" % \
+                (tar, '.', tool_name, tool_name)
+        else:
+            cmd = "mkdir %s && tar -xf %s -C %s && rm -fr %s/*.intermediates.tar.gz %s/*.bw" % \
+                (tool_name, tar, tool_name, tool_name, tool_name)
+
 
         run_cmd(cmd)
         untarred_dirs.append(tool_name)
 
-        description = {
-            'caveman': 'Files prodived by CaVEMan tool',
-            'pindel': 'Files prodived by Pindel tool',
-            'ascat': 'Files prodived by ASCAT tool, bw files removed',
-            'brass': 'Files prodived by BRASS tool, bw files and intermediates.tar.gz removed'
-        }
-
-        content = {
+        extra_info = {
             "description": description[tool_name],
-            "path": tool_name,
             "files": []
         }
 
         for f in sorted(glob.glob(f"{tool_name}/*")):
-            content['files'].append(f.split(os.sep)[1])
+            extra_info['files'].append(f.split(os.sep)[1])
 
-        extra_info['contents'].append(content)
 
-    extra_info_file = 'sanger.supplement.extra_info.json'
-    with open (extra_info_file, 'w') as w:
-        w.write(json.dumps(extra_info, indent=2))
+        extra_info_file = 'sanger.%s-supplement.extra_info.json' % tool_name
+        with open (extra_info_file, 'w') as w:
+            w.write(json.dumps(extra_info, indent=2))
 
-    create_tar_cmd = 'tar -czf %s.supplement.tgz %s %s' % (prefix, ' '.join(untarred_dirs), extra_info_file)
-    run_cmd(create_tar_cmd)
+        create_tar_cmd = 'tar -czf %s.%s-supplement.tgz %s %s' % (prefix, tool_name, ' '.join(untarred_dirs), extra_info_file)
+        run_cmd(create_tar_cmd)
 
 
 if __name__ == "__main__":
