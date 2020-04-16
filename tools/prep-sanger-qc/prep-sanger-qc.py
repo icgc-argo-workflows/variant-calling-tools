@@ -65,10 +65,14 @@ def get_contamination_extra_info(file_path):
     extra_info = {}
     with open(file_path, 'r') as fp:
         info = json.load(fp)
-        for sample in info:
+        for sample, samplev in info.items():
             extra_info.update({'sample_id': sample})
+            extra_info.update({'avg_depth': float(samplev['avg_depth'])})
+            extra_info.update({'reads_used': int(samplev['reads_used'])})
+            extra_info.update({'snps_used': int(samplev['snps_used'])})
+            extra_info.update({'contamination': float(samplev['contamination'])})
             extra_info['by_readgroup'] = []
-            for rg, rgv in info[sample]['by_readgroup'].items():
+            for rg, rgv in samplev['by_readgroup'].items():
                 rg_value = {}
                 rg_value.update({'read_group_id': rg})
                 rg_value.update({'avg_depth': float(rgv['avg_depth'])})
