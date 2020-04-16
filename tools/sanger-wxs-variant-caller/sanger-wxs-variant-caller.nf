@@ -24,9 +24,9 @@
 nextflow.preview.dsl=2
 version = '3.1.6-2'
 
-params.reference = ""
-params.annot = ""
-params.snv_indel = ""
+params.ref_genome_tar = ""
+params.vagrent_annot = ""
+params.ref_snv_indel_tar = ""
 params.tumour = ""
 params.tumourIdx = ""
 params.normal = ""
@@ -34,9 +34,10 @@ params.normalIdx = ""
 params.exclude = "chrUn%,HLA%,%_alt,%_random,chrM,chrEBV"
 params.species = "human"
 params.assembly = "GRCh38"
+params.skipannot = false
 params.container_version = ""
 params.cpus = 18
-params.mem = 4  // GB
+params.mem = 32  // GB
 
 
 def getSangerWxsSecondaryFiles(main_file){  //this is kind of like CWL's secondary files
@@ -72,6 +73,7 @@ process sangerWxsVariantCaller {
     path "WXS_*_vs_*.timings.tar.gz", emit: timings
 
   script:
+    arg_skipannot = params.skipannot ? "-skipannot" : ""
     """
     /opt/wtsi-cgp/bin/ds-cgpwxs.pl \
       -cores ${task.cpus} \
@@ -85,6 +87,7 @@ process sangerWxsVariantCaller {
       -exclude ${params.exclude} \
       -species ${params.species} \
       -assembly ${params.assembly} \
+      ${arg_skipannot} \
       -outdir \$PWD
     """
 }

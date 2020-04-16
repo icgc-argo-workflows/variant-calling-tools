@@ -23,9 +23,9 @@
 
 nextflow.preview.dsl=2
 
-params.reference = ""
-params.annot = ""
-params.snv_indel = ""
+params.ref_genome_tar = ""
+params.vagrent_annot = ""
+params.ref_snv_indel_tar = ""
 params.tumour = ""
 params.tumourIdx = ""
 params.normal = ""
@@ -45,9 +45,9 @@ Channel
 workflow {
   main:
     sangerWxsVariantCaller(
-      file(params.reference),
-      file(params.annot),
-      file(params.snv_indel),
+      file(params.ref_genome_tar),
+      file(params.vagrent_annot),
+      file(params.ref_snv_indel_tar),
       file(params.tumour),
       file(params.tumourIdx),
       tumour_ch.collect(),
