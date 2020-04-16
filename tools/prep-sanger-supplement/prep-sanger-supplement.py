@@ -31,7 +31,6 @@ def run_cmd(cmd):
 
 
 def main(args):
-    untarred_dirs = []
     prefix = 'sanger'  # will be overwritten
 
     description = {
@@ -59,7 +58,6 @@ def main(args):
 
 
         run_cmd(cmd)
-        untarred_dirs.append(tool_name)
 
         extra_info = {
             "description": description[tool_name],
@@ -74,7 +72,7 @@ def main(args):
         with open (extra_info_file, 'w') as w:
             w.write(json.dumps(extra_info, indent=2))
 
-        create_tar_cmd = 'tar -czf %s.%s-supplement.tgz %s %s' % (prefix, tool_name, ' '.join(untarred_dirs), extra_info_file)
+        create_tar_cmd = 'tar -czf %s.%s-supplement.tgz %s %s' % (prefix, tool_name, tool_name, extra_info_file)
         run_cmd(create_tar_cmd)
 
 
