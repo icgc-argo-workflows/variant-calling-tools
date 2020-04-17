@@ -71,14 +71,15 @@ def get_contamination_extra_info(file_path):
             extra_info.update({'reads_used': int(samplev['reads_used'])})
             extra_info.update({'snps_used': int(samplev['snps_used'])})
             extra_info.update({'contamination': float(samplev['contamination'])})
-            extra_info['by_readgroup'] = []
-            for rg, rgv in samplev['by_readgroup'].items():
-                rg_value = {}
-                rg_value.update({'read_group_id': rg})
-                rg_value.update({'avg_depth': float(rgv['avg_depth'])})
-                rg_value.update({'contamination': float(rgv['contamination'])})
-                rg_value.update({'reads_used': int(rgv['reads_used'])})
-                extra_info['by_readgroup'].append(rg_value)
+            #do not put readgroup level info into payload
+            #extra_info['by_readgroup'] = []
+            #for rg, rgv in samplev['by_readgroup'].items():
+            #    rg_value = {}
+            #    rg_value.update({'read_group_id': rg})
+            #    rg_value.update({'avg_depth': float(rgv['avg_depth'])})
+            #    rg_value.update({'contamination': float(rgv['contamination'])})
+            #    rg_value.update({'reads_used': int(rgv['reads_used'])})
+            #    extra_info['by_readgroup'].append(rg_value)
 
     return extra_info
 
@@ -100,7 +101,8 @@ def main(args):
         tar_name = None
         if re.match(r'.+?\.bas', f):
             tar_name = os.path.splitext(f)[0] + '.bas_metrics.tgz'
-            extra_info = get_bas_extra_info(f)
+            #do not get bas_metrics readgroup level info into payload
+            #extra_info = get_bas_extra_info(f)
             file_to_upload.append(f)
 
         if re.match(r'.+?\.ascat.tgz', f):
@@ -130,14 +132,15 @@ def main(args):
                 if member.endswith('result.json'):
                     extra_info = get_genotyped_extra_info(member)
 
-        extra_json = os.path.splitext(tar_name)[0] + '.extra_info.json'
-        with open(extra_json, 'w') as j:
-            j.write(json.dumps(extra_info, indent=2))
-
         with tarfile.open(tar_name, 'w') as tar:
-            tar.add(extra_json)
             for member in file_to_upload:
                 tar.add(member, arcname=os.path.basename(member))
+            if extra_info:
+                extra_json = os.path.splitext(tar_name)[0] + '.extra_info.json'
+                with open(extra_json, 'w') as j:
+                    j.write(json.dumps(extra_info, indent=2))
+                tar.add(extra_json)
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
