@@ -22,7 +22,7 @@
  */
 
 nextflow.preview.dsl=2
-version = '3.1.6-2'
+version = '3.1.6-3'
 
 params.ref_genome_tar = ""
 params.vagrent_annot = ""
