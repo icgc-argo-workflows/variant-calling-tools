@@ -1,4 +1,6 @@
 {
   "seq": "input/172cd780-231b-56ee-815a-f45a29cc3bd9.3.20190825.wgs.grch38.bam",
-  "seq_idx": "input/172cd780-231b-56ee-815a-f45a29cc3bd9.3.20190825.wgs.grch38.bam.bai"
+  "seq_idx": "input/172cd780-231b-56ee-815a-f45a29cc3bd9.3.20190825.wgs.grch38.bam.bai",
+  "cpus": 1,
+  "mem": 1
 }

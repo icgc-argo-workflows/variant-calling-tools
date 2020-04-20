@@ -1,5 +1,7 @@
 {
   "seq": "input/172cd780-231b-56ee-815a-f45a29cc3bd9.3.20190824.wgs.grch38.cram",
   "seq_idx": "input/172cd780-231b-56ee-815a-f45a29cc3bd9.3.20190824.wgs.grch38.cram.crai",
-  "reference": "input/reference/tiny-grch38-chr11-530001-537000.fa"
+  "reference": "input/reference/tiny-grch38-chr11-530001-537000.fa",
+  "cpus": 1,
+  "mem": 1
 }
