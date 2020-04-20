@@ -119,6 +119,13 @@ inputs:
       separate: true
       shellQuote: true
 
+  skipannot:
+    type: boolean?
+    doc: "Disable Pindel and CaVEMan annotation steps"
+    default: false
+    inputBinding:
+      prefix: -skipannot
+      separate: true
 
 outputs:
   run_params:
