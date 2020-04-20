@@ -1,0 +1,10 @@
+{
+  "qc_files": [
+                "data/SA610228.normal.contamination.tgz",
+                "data/SA610229.tumour.contamination.tgz",
+                "data/WGS_SA610229_vs_SA610228.genotyped.tgz",
+                "data/TEST-PR.DO250183.SA610228.wgs.20200320.aln.cram.bas",
+                "data/TEST-PR.DO250183.SA610229.wgs.20200320.aln.cram.bas",
+                "data/WGS_SA610229_vs_SA610228.ascat.tgz"
+  ],
+}

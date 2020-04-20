@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-python3:latest
+FROM quay.io/icgc-argo/dna-seq-processing-tools:base-docker.0.2.0
 
 ENV PATH="/tools:${PATH}"
 
