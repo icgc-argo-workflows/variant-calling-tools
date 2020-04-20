@@ -64,3 +64,6 @@ docs/_build
 *.log
 .vscode
 .python-version
+.nextflow*
+outdir
+work
