@@ -11,6 +11,8 @@ use warnings FATAL => 'all';
 
 pod2usage(-verbose => 1, -exitval => 1) if(@ARGV == 0);
 
+$ENV{HOME}=$ENV{PWD};
+
 # set defaults
 my %opts = ('c' => undef,
             'o' => $ENV{HOME},
