@@ -50,12 +50,11 @@ def main(args):
 
         # untar and remove unneeded files
         if tool_name == 'timings':
-            cmd = "tar -xf %s -C %s && rm -fr %s/*.intermediates.tar.gz %s/*.bw" % \
-                (tar, '.', tool_name, tool_name)
+            cmd = "tar -xf %s -C %s && rm -fr %s/*.brm.bam %s/*.brm.bam.bai %s/*.intermediates.tar.gz %s/*.bw" % \
+                (tar, '.', tool_name, tool_name, tool_name, tool_name)
         else:
             cmd = "mkdir %s && tar -xf %s -C %s && rm -fr %s/*.intermediates.tar.gz %s/*.bw" % \
                 (tool_name, tar, tool_name, tool_name, tool_name)
-
 
         run_cmd(cmd)
 
