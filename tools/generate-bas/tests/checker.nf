@@ -26,6 +26,7 @@ nextflow.preview.dsl=2
 params.reference = "NO_FILE"
 params.seq = ""
 params.seq_idx = ""
+params.tumour_normal = "tumour"
 
 include { generateBas; getBasSecondaryFiles } from '../generate-bas' params(params)
 
@@ -37,6 +38,7 @@ Channel
 workflow {
   main:
     generateBas(
+      params.tumour_normal,
       file(params.seq),
       file(params.seq_idx),
       file(params.reference),
