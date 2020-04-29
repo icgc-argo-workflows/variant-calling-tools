@@ -55,7 +55,8 @@ process generateBas {
     path reference_fai
 
   output:
-    path "${seq.name}.${tumour_normal}.bas", emit: bas_file
+    path "${seq.name}.bas", emit: bas_file
+    path "${seq.name}.${tumour_normal}.bas", emit: bas_file_with_tn
 
   script:
     arg_ref = reference.name != 'NO_FILE' ? "-r ${reference}" : ''
@@ -71,6 +72,8 @@ process generateBas {
       -i ${seq} \
       ${arg_ref} \
       --num_threads ${task.cpus} \
-      -o ${seq.name}.${tumour_normal}.bas
+      -o ${seq.name}.bas
+
+    ln -s ${seq.name}.bas ${seq.name}.${tumour_normal}.bas
     """
 }
