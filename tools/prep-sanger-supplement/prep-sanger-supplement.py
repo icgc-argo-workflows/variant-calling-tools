@@ -60,11 +60,11 @@ def main(args):
 
         extra_info = {
             "description": description[tool_name],
-            "files": []
+            "files_in_tgz": []
         }
 
         for f in sorted(glob.glob(f"{tool_name}/*")):
-            extra_info['files'].append(f.split(os.sep)[1])
+            extra_info['files_in_tgz'].append(f.split(os.sep)[1])
 
 
         extra_info_file = 'sanger.%s-supplement.extra_info.json' % tool_name
