@@ -105,7 +105,7 @@ def main(args):
         file_to_upload = []
         extra_info = {
             "description": None,
-            "files": []
+            "files_in_tgz": []
         }
         metrics = {}
         tar_name = None
@@ -151,7 +151,7 @@ def main(args):
         with tarfile.open(tar_name, 'w') as tar:
             for member in file_to_upload:
                 tar.add(member, arcname=os.path.basename(member))
-                extra_info['files'].append(os.path.basename(member))
+                extra_info['files_in_tgz'].append(os.path.basename(member))
 
             extra_json = os.path.splitext(tar_name)[0] + '.extra_info.json'
             with open(extra_json, 'w') as j:
