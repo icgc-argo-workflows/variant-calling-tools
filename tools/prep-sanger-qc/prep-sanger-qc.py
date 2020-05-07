@@ -36,15 +36,19 @@ def get_bas_extra_info(file_path):
     extra_info = {}
     with open(file_path, 'r') as fp:
         Reader = csv.DictReader(fp, delimiter='\t')
-        info = []
         for line in Reader:
             for key, value in line.items():
-                if key.startswith('#') or key in ['read_length_r1', 'read_length_r2']:
-                    line.update({key: int(value)})
+                if key in ['bam_filename', 'platform', 'platform_unit', 'library', 'readgroup', 'sample']: 
+                    continue
+                if key.startswith('#'):
+                    if not extra_info.get(key): extra_info[key] = int(value)
+                    extra_info[key] = extra_info[key] + int(value)    
+                if key in ['read_length_r1', 'read_length_r2']:
+                    if not extra_info.get(key): extra_info[key] = int(value)
+                    extra_info[key] = int((extra_info[key] + int(value))/2)
                 if key in ['insert_size_sd', 'mean_insert_size', 'median_insert_size']:
-                    line.update({key: float(value)})
-            info.append(line)
-    extra_info.update({'read_groups': info})
+                    if not extra_info.get(key): extra_info[key] = float(value)
+                    extra_info[key] = float((extra_info[key] + float(value))/2)
     return extra_info
 
 
@@ -113,7 +117,7 @@ def main(args):
             tar_name = os.path.splitext(f)[0] + '.bas_metrics.tgz'
             extra_info['description'] = description['bas']
             #do not get bas_metrics readgroup level info into payload
-            #extra_info = get_bas_extra_info(f)
+            metrics = get_bas_extra_info(f)
             file_to_upload.append(f)
 
         if re.match(r'.+?\.ascat.tgz', f):
