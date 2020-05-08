@@ -1,0 +1,9 @@
+{
+  "result_tars": [
+    "input/WXS_SA610229_vs_SA610228.timings.tar.gz",
+    "input/WXS_SA610229_vs_SA610228.caveman.tgz",
+    "input/WXS_SA610229_vs_SA610228.pindel.tgz",
+    "input/WXS_SA610229_vs_SA610228.ascat.tgz",
+    "input/WXS_SA610229_vs_SA610228.brass.tgz"
+  ]
+}
