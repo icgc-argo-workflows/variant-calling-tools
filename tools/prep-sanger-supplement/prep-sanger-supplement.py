@@ -50,21 +50,21 @@ def main(args):
 
         # untar and remove unneeded files
         if tool_name == 'timings':
-            cmd = "tar -xf %s -C %s && rm -fr %s/*.brm.bam %s/*.brm.bam.bai %s/*.intermediates.tar.gz %s/*.bw" % \
-                (tar, '.', tool_name, tool_name, tool_name, tool_name)
+            cmd = 'tar -xf %s -C %s && ' % (tar, '.')
         else:
-            cmd = "mkdir %s && tar -xf %s -C %s && rm -fr %s/*.intermediates.tar.gz %s/*.bw" % \
-                (tool_name, tar, tool_name, tool_name, tool_name)
+            cmd = 'mkdir %s && tar -xf %s -C %s && ' % (tool_name, tar, tool_name)
 
+        cmd = cmd + "rm -fr %s/*.brm.bam %s/*.brm.bam.bai %s/*.intermediates.tar.gz %s/*.bw" % \
+                        tuple([tool_name] * 4)
         run_cmd(cmd)
 
         extra_info = {
             "description": description[tool_name],
-            "files": []
+            "files_in_tgz": []
         }
 
         for f in sorted(glob.glob(f"{tool_name}/*")):
-            extra_info['files'].append(f.split(os.sep)[1])
+            extra_info['files_in_tgz'].append(f.split(os.sep)[1])
 
 
         extra_info_file = 'sanger.%s-supplement.extra_info.json' % tool_name
