@@ -32,26 +32,6 @@ def run_cmd(cmd):
 
     return
 
-def get_bas_extra_info(file_path):
-    extra_info = {}
-    with open(file_path, 'r') as fp:
-        Reader = csv.DictReader(fp, delimiter='\t')
-        for line in Reader:
-            for key, value in line.items():
-                if key in ['bam_filename', 'platform', 'platform_unit', 'library', 'readgroup', 'sample']: 
-                    continue
-                if key.startswith('#'):
-                    if not extra_info.get(key): extra_info[key] = int(value)
-                    extra_info[key] = extra_info[key] + int(value)    
-                if key in ['read_length_r1', 'read_length_r2']:
-                    if not extra_info.get(key): extra_info[key] = int(value)
-                    extra_info[key] = int((extra_info[key] + int(value))/2)
-                if key in ['insert_size_sd', 'mean_insert_size', 'median_insert_size']:
-                    if not extra_info.get(key): extra_info[key] = float(value)
-                    extra_info[key] = float((extra_info[key] + float(value))/2)
-    return extra_info
-
-
 def get_ascat_extra_info(file_path):
     extra_info = {}
     with open(file_path, 'r') as fp:
@@ -117,8 +97,7 @@ def main(args):
             tar_name = os.path.splitext(f)[0] + '.bas_metrics.tgz'
             extra_info['description'] = description['bas']
             #do not get bas_metrics readgroup level info into payload
-            metrics = get_bas_extra_info(f)
-            file_to_upload.append(f)
+            file_to_upload.append(os.path.realpath(f))
 
         if re.match(r'.+?\.ascat.tgz', f):
             tar_name = os.path.splitext(f)[0] + '_metrics.tgz'
@@ -152,7 +131,7 @@ def main(args):
 
         if metrics: extra_info.update({"metrics": metrics})
 
-        with tarfile.open(tar_name, 'w') as tar:
+        with tarfile.open(tar_name, 'w:gz') as tar:
             for member in file_to_upload:
                 tar.add(member, arcname=os.path.basename(member))
                 extra_info['files_in_tgz'].append(os.path.basename(member))
