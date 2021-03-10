@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   Authors:
-    lindaxiang
+    Linda Xiang (linda.xiang@oicr.on.ca)
 */
 
 /********************************************************************/
@@ -43,10 +43,30 @@ params.mem = 1  // GB
 params.publish_dir = ""  // set to empty string will disable publishDir
 
 
-// tool specific parmas go here, add / change as needed
+// tool specific params go here, add / change as needed
 params.input_file = ""
-params.output_pattern = "*"  // output file name pattern
+params.regions_file = "NO_FILE_regions"
+params.output_type = ""
+params.apply_filters = ""
+params.include = ""
+params.exclude = ""
 
+//include { getSecondaryFiles } from './modules/raw.githubusercontent.com/icgc-argo/gatk-tools/gatk-filter-mutect-calls.4.1.8.0-2.2/tools/gatk-filter-mutect-calls/gatk-filter-mutect-calls'
+
+def getSecondaryFiles(main_file, exts){
+  def secondaryFiles = []
+  for (ext in exts) {
+    if (ext.startsWith("^")) {
+      ext = ext.replace("^", "")
+      parts = main_file.split("\\.").toList()
+      parts.removeLast()
+      secondaryFiles.add((parts + [ext]).join("."))
+    } else {
+      secondaryFiles.add(main_file + '.' + ext)
+    }
+  }
+  return secondaryFiles
+}
 
 process variantFilter {
   container "${params.container ?: container[params.container_registry ?: default_container_registry]}:${params.container_version ?: version}"
@@ -57,19 +77,33 @@ process variantFilter {
 
   input:  // input, make update as needed
     path input_file
+    path input_file_idx
+    path regions_file
+    val output_type
+    val apply_filters
+    val include
+    val exclude
 
   output:  // output, make update as needed
-    path "output_dir/${params.output_pattern}", emit: output_file
+    path "*.filtered.vcf.gz", emit: filtered_vcf
+    path "*.filtered.vcf.gz.tbi", emit: filtered_vcf_tbi
 
   script:
     // add and initialize variables here as needed
+    arg_regions_file = regions_file.name == 'NO_FILE_regions' ? "" : " --regions-file ${regions_file}"
+    arg_apply_filters = apply_filters == '' ? "" : " --apply-filters '${apply_filters}'"
+    arg_include = include == '' ? "" : " --include '${include}'"
+    arg_exclude = exclude == '' ? "" : " --exclude '${exclude}'"
+    arg_output_type = output_type == '' ? "" : " --output-type ${output_type}"
 
     """
-    mkdir -p output_dir
-
     main.py \
-      -i ${input_file} \
-      -o output_dir
+      -v ${input_file} \
+      ${arg_output_type} \
+      ${arg_regions_file} \
+      ${arg_apply_filters} \
+      ${arg_include} \
+      ${arg_exclude} 
 
     """
 }
@@ -79,6 +113,12 @@ process variantFilter {
 // using this command: nextflow run <git_acc>/<repo>/<pkg_name>/<main_script>.nf -r <pkg_name>.v<pkg_version> --params-file xxx
 workflow {
   variantFilter(
-    file(params.input_file)
+    file(params.input_file),
+    Channel.fromPath(getSecondaryFiles(params.input_file, ['tbi']), checkIfExists: true).collect(),
+    file(params.regions_file),
+    params.output_type,
+    params.apply_filters,
+    params.include,
+    params.exclude
   )
 }

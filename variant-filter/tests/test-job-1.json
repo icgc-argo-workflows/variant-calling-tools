@@ -1,6 +1,8 @@
 {
-    "input_file": "input/test_rg_3.bam",
-    "expected_output": "expected/expected.test_rg_3.bam",
+    "input_file": "input/SA610229_vs_SA610228.flagged.muts.vcf.gz",
+    "regions_file": "reference/open_access.bed.gz",
+    "apply_filters": ".,PASS",
+    "include": "INFO/CLPM=0 && INFO/ASRD>=0.93",
     "publish_dir": "outdir",
     "cpus": 1,
     "mem": 0.5

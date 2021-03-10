@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   Authors:
-    lindaxiang
+    Linda Xiang (linda.xiang@oicr.on.ca)
 */
 
 /*
@@ -42,60 +42,47 @@ params.container_registry = ""
 params.container_version = ""
 params.container = ""
 
-// tool specific parmas go here, add / change as needed
+// tool specific params go here, add / change as needed
 params.input_file = ""
-params.expected_output = ""
+params.regions_file = "NO_FILE_regions"
+params.output_type = ""
+params.apply_filters = ""
+params.include = ""
+params.exclude = ""
 
-include { variantFilter } from '../main'
-
-Channel
-  .fromPath(params.input_file, checkIfExists: true)
-  .set { input_file }
-
-
-process file_smart_diff {
-  container "${params.container ?: container[params.container_registry ?: default_container_registry]}:${params.container_version ?: version}"
-
-  input:
-    path output_file
-    path expected_file
-
-  output:
-    stdout()
-
-  script:
-    """
-    # Note: this is only for demo purpose, please write your own 'diff' according to your own needs.
-    # remove date field before comparison eg, <div id="header_filename">Tue 19 Jan 2021<br/>test_rg_3.bam</div>
-    # sed -e 's#"header_filename">.*<br/>test_rg_3.bam#"header_filename"><br/>test_rg_3.bam</div>#'
-
-    diff <( cat ${output_file} | sed -e 's#"header_filename">.*<br/>#"header_filename"><br/>#' ) \
-         <( ([[ '${expected_file}' == *.gz ]] && gunzip -c ${expected_file} || cat ${expected_file}) | sed -e 's#"header_filename">.*<br/>#"header_filename"><br/>#' ) \
-    && ( echo "Test PASSED" && exit 0 ) || ( echo "Test FAILED, output file mismatch." && exit 1 )
-    """
-}
-
+include { variantFilter; getSecondaryFiles } from '../main'
 
 workflow checker {
   take:
     input_file
-    expected_output
+    input_file_idx
+    regions_file
+    output_type
+    apply_filters
+    include
+    exclude
 
   main:
     variantFilter(
-      input_file
-    )
-
-    file_smart_diff(
-      variantFilter.out.output_file,
-      expected_output
+      input_file,
+      input_file_idx,
+      regions_file,
+      output_type,
+      apply_filters,
+      include,
+      exclude
     )
 }
 
 
 workflow {
   checker(
-    file(params.input_file),
-    file(params.expected_output)
+      file(params.input_file),
+      Channel.fromPath(getSecondaryFiles(params.input_file, ['tbi']), checkIfExists: true).collect(),
+      file(params.regions_file),
+      params.output_type,
+      params.apply_filters,
+      params.include,
+      params.exclude
   )
 }
