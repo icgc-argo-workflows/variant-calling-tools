@@ -79,7 +79,6 @@ process variantFilter {
     path input_file
     path input_file_idx
     path regions_file
-    val output_type
     val apply_filters
     val include
     val exclude
@@ -94,7 +93,7 @@ process variantFilter {
     arg_apply_filters = apply_filters == '' ? "" : " --apply-filters '${apply_filters}'"
     arg_include = include == '' ? "" : " --include '${include}'"
     arg_exclude = exclude == '' ? "" : " --exclude '${exclude}'"
-    arg_output_type = output_type == '' ? "" : " --output-type ${output_type}"
+    arg_output_type = params.output_type == '' ? "" : " --output-type ${params.output_type}"
 
     """
     main.py \

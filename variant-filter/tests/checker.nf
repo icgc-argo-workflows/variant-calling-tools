@@ -49,28 +49,52 @@ params.output_type = ""
 params.apply_filters = ""
 params.include = ""
 params.exclude = ""
+params.expected_output = ""
 
 include { variantFilter; getSecondaryFiles } from '../main'
+
+process file_smart_diff {
+  container "${params.container ?: container[params.container_registry ?: default_container_registry]}:${params.container_version ?: version}"
+
+  input:
+    path output_file
+    path expected_file
+
+  output:
+    stdout()
+
+  script:
+    """
+    # Delete header lines before diff
+    diff <( ([[ '${output_file}' == *.gz ]] && gunzip -c ${output_file} || cat ${output_file}) | sed '/^##/d' ) \
+         <( ([[ '${expected_file}' == *.gz ]] && gunzip -c ${expected_file} || cat ${expected_file}) | sed '/^##/d' ) \
+    && ( echo "Test PASSED" && exit 0 ) || ( echo "Test FAILED, output file mismatch." && exit 1 )
+    """
+}
 
 workflow checker {
   take:
     input_file
     input_file_idx
     regions_file
-    output_type
     apply_filters
     include
     exclude
+    expected_output
 
   main:
     variantFilter(
       input_file,
       input_file_idx,
       regions_file,
-      output_type,
       apply_filters,
       include,
       exclude
+    )
+  
+    file_smart_diff(
+      variantFilter.out.filtered_vcf,
+      expected_output
     )
 }
 
@@ -80,9 +104,9 @@ workflow {
       file(params.input_file),
       Channel.fromPath(getSecondaryFiles(params.input_file, ['tbi']), checkIfExists: true).collect(),
       file(params.regions_file),
-      params.output_type,
       params.apply_filters,
       params.include,
-      params.exclude
+      params.exclude,
+      file(params.expected_output)
   )
 }

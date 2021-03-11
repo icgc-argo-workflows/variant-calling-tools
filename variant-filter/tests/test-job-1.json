@@ -3,6 +3,7 @@
     "regions_file": "reference/open_access.bed.gz",
     "apply_filters": ".,PASS",
     "include": "INFO/CLPM=0 && INFO/ASRD>=0.93",
+    "expected_output": "expected/expected.filtered.vcf.gz",
     "publish_dir": "outdir",
     "cpus": 1,
     "mem": 0.5
