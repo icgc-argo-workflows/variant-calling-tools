@@ -5,6 +5,8 @@ LABEL \
   description="bcftools image for use in Workflows" \
   org.opencontainers.image.source="https://github.com/icgc-argo/variant-calling-tools"
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update \
     && apt-get install -y python3-pip python3-dev software-properties-common curl \
     && apt-get install -y bzip2 g++ make ncurses-dev zlib1g-dev libz-dev pkg-config libbz2-dev liblzma-dev 

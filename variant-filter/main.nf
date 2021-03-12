@@ -51,22 +51,7 @@ params.apply_filters = ""
 params.include = ""
 params.exclude = ""
 
-//include { getSecondaryFiles } from './modules/raw.githubusercontent.com/icgc-argo/gatk-tools/gatk-filter-mutect-calls.4.1.8.0-2.2/tools/gatk-filter-mutect-calls/gatk-filter-mutect-calls'
-
-def getSecondaryFiles(main_file, exts){
-  def secondaryFiles = []
-  for (ext in exts) {
-    if (ext.startsWith("^")) {
-      ext = ext.replace("^", "")
-      parts = main_file.split("\\.").toList()
-      parts.removeLast()
-      secondaryFiles.add((parts + [ext]).join("."))
-    } else {
-      secondaryFiles.add(main_file + '.' + ext)
-    }
-  }
-  return secondaryFiles
-}
+include { getSecondaryFiles as getSec } from './wfpr_modules/github.com/icgc-argo/data-processing-utility-tools/helper-functions@1.0.0/main.nf'
 
 process variantFilter {
   container "${params.container ?: container[params.container_registry ?: default_container_registry]}:${params.container_version ?: version}"
@@ -82,6 +67,7 @@ process variantFilter {
     val apply_filters
     val include
     val exclude
+    val output_type
 
   output:  // output, make update as needed
     path "*.filtered.vcf.gz", emit: filtered_vcf
@@ -93,7 +79,7 @@ process variantFilter {
     arg_apply_filters = apply_filters == '' ? "" : " --apply-filters '${apply_filters}'"
     arg_include = include == '' ? "" : " --include '${include}'"
     arg_exclude = exclude == '' ? "" : " --exclude '${exclude}'"
-    arg_output_type = params.output_type == '' ? "" : " --output-type ${params.output_type}"
+    arg_output_type = output_type == '' ? "" : " --output-type ${output_type}"
 
     """
     main.py \
@@ -113,11 +99,11 @@ process variantFilter {
 workflow {
   variantFilter(
     file(params.input_file),
-    Channel.fromPath(getSecondaryFiles(params.input_file, ['tbi']), checkIfExists: true).collect(),
+    Channel.fromPath(getSec(params.input_file, ['tbi']), checkIfExists: true).collect(),
     file(params.regions_file),
-    params.output_type,
     params.apply_filters,
     params.include,
-    params.exclude
+    params.exclude,
+    params.output_type
   )
 }

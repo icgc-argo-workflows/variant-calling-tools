@@ -51,7 +51,9 @@ params.include = ""
 params.exclude = ""
 params.expected_output = ""
 
-include { variantFilter; getSecondaryFiles } from '../main'
+include { variantFilter } from '../main'
+include { getSecondaryFiles as getSec } from './wfpr_modules/github.com/icgc-argo/data-processing-utility-tools/helper-functions@1.0.0/main.nf'
+
 
 process file_smart_diff {
   container "${params.container ?: container[params.container_registry ?: default_container_registry]}:${params.container_version ?: version}"
@@ -80,6 +82,7 @@ workflow checker {
     apply_filters
     include
     exclude
+    output_type
     expected_output
 
   main:
@@ -89,7 +92,8 @@ workflow checker {
       regions_file,
       apply_filters,
       include,
-      exclude
+      exclude,
+      output_type
     )
   
     file_smart_diff(
@@ -102,11 +106,12 @@ workflow checker {
 workflow {
   checker(
       file(params.input_file),
-      Channel.fromPath(getSecondaryFiles(params.input_file, ['tbi']), checkIfExists: true).collect(),
+      Channel.fromPath(getSec(params.input_file, ['tbi']), checkIfExists: true).collect(),
       file(params.regions_file),
       params.apply_filters,
       params.include,
       params.exclude,
+      params.output_type,
       file(params.expected_output)
   )
 }
