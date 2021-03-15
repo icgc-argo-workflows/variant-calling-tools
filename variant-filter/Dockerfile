@@ -5,7 +5,7 @@ LABEL \
   description="bcftools image for use in Workflows" \
   org.opencontainers.image.source="https://github.com/icgc-argo/variant-calling-tools"
 
-ENV DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get install -y python3-pip python3-dev software-properties-common curl \
@@ -32,5 +32,11 @@ RUN ln -s $BCFTOOLS_INSTALL_DIR/bin/bcftools /usr/bin/bcftools \
 ENV PATH="/tools:${PATH}"
 
 COPY *.py /tools/
+
+RUN groupadd -g 1000 ubuntu &&\
+    useradd -l -u 1000 -g ubuntu ubuntu &&\
+    install -d -m 0755 -o ubuntu -g ubuntu /home/ubuntu
+
+USER ubuntu
 
 CMD ["/bin/bash"]

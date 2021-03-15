@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   Authors:
-    Linda Xiang (linda.xiang@oicr.on.ca)
+    Linda Xiang
 */
 
 /*
