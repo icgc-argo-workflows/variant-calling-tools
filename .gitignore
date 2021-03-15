@@ -65,5 +65,15 @@ docs/_build
 .vscode
 .python-version
 .nextflow*
-outdir
 work
+outdir
+.nextflow*
+.idea*
+results
+my-results
+out
+reports
+remote_reports
+params.json
+params.*.json
+wfpr_modules/github.com/*/*/*/tests
