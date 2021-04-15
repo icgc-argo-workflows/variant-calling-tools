@@ -33,7 +33,4 @@ workflow {
     prepSangerQc(
       Channel.fromPath(params.qc_files).collect()
     )
-
-  publish:
-    prepSangerQc.out to: "outdir", overwrite: true
 }
